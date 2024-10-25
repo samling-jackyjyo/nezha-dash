@@ -7,7 +7,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import getEnv from "@/lib/env-entry";
 import { DateTime } from "luxon";
 import { useTranslations } from "next-intl";
-import { useLocale } from "next-intl";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
@@ -19,7 +18,6 @@ function Header() {
   const customDescription = getEnv("NEXT_PUBLIC_CustomDescription");
 
   const router = useRouter();
-  const locale = useLocale();
 
   return (
     <div className="mx-auto w-full max-w-5xl">
@@ -27,7 +25,7 @@ function Header() {
         <section
           onClick={() => {
             sessionStorage.removeItem("selectedTag");
-            router.push(`/${locale}/`);
+            router.push(`/`);
           }}
           className="flex cursor-pointer items-center text-base font-medium"
         >
@@ -64,7 +62,7 @@ function Header() {
 
 // https://github.com/streamich/react-use/blob/master/src/useInterval.ts
 const useInterval = (callback: Function, delay?: number | null) => {
-  const savedCallback = useRef<Function>(() => {});
+  const savedCallback = useRef<Function>(() => { });
   useEffect(() => {
     savedCallback.current = callback;
   });

@@ -1,6 +1,6 @@
 "use client";
 
-import { ServerApi } from "@/app/[locale]/types/nezha-api";
+import { ServerApi } from "@/app/types/nezha-api";
 import { Loader } from "@/components/loading/Loader";
 import { Card, CardContent } from "@/components/ui/card";
 import getEnv from "@/lib/env-entry";
@@ -18,13 +18,16 @@ export default function ServerOverviewClient() {
   );
   const disableCartoon = getEnv("NEXT_PUBLIC_DisableCartoon") === "true";
 
-  if (error)
+  if (error) {
     return (
       <div className="flex flex-col items-center justify-center">
-        <p className="text-sm font-medium opacity-40">{error.message}</p>
+        <p className="text-sm font-medium opacity-40">
+          Error status:{error.status} {error.info?.cause ?? error.message}
+        </p>
         <p className="text-sm font-medium opacity-40">{t("error_message")}</p>
       </div>
     );
+  }
 
   return (
     <>

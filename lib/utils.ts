@@ -1,4 +1,4 @@
-import { NezhaAPISafe } from "@/app/[locale]/types/nezha-api";
+import { NezhaAPISafe } from "@/app/types/nezha-api";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -71,19 +71,20 @@ export const fetcher = (url: string) =>
       throw err;
     });
 
-export const nezhaFetcher = (url: string) =>
-  fetch(url)
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
-      return res.json();
-    })
-    .then((data) => data)
-    .catch((err) => {
-      console.error(err);
-      throw err;
-    });
+export const nezhaFetcher = async (url: string) => {
+  const res = await fetch(url);
+
+  if (!res.ok) {
+    const error = new Error("An error occurred while fetching the data.");
+    // @ts-ignore
+    error.info = await res.json();
+    // @ts-ignore
+    error.status = res.status;
+    throw error;
+  }
+
+  return res.json();
+};
 
 export function formatRelativeTime(timestamp: number): string {
   const now = Date.now();
